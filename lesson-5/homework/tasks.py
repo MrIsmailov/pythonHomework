@@ -1,4 +1,4 @@
-# Task 1
+# Task 1: 
 def convert_cel_to_far(celsius):
     return round(celsius * 9/5 + 32, 2)
 
@@ -8,6 +8,7 @@ def convert_far_to_cel(fahrenheit):
 fahrenheit = float(input("Enter a temperature in degrees F: "))
 celsius = convert_far_to_cel(fahrenheit)
 print(f"{fahrenheit} degrees F = {celsius} degrees C")
+
 
 celsius = float(input("Enter a temperature in degrees C: "))
 fahrenheit = convert_cel_to_far(celsius)
@@ -24,7 +25,7 @@ rate = float(input("Enter the annual rate of return (as a decimal): "))
 years = int(input("Enter the number of years: "))
 invest(principal, rate, years)
 
-# Task 3
+# Task 3:
 def factors(n):
     for i in range(1, n + 1):
         if n % i == 0:
@@ -33,7 +34,7 @@ def factors(n):
 number = int(input("Enter a positive integer: "))
 factors(number)
 
-# Task 4:
+# Task 4: 
 universities = [
     ['California Institute of Technology', 2175, 37704],
     ['Harvard', 19627, 39849],
@@ -79,7 +80,7 @@ print(f"Tuition mean: $ {tuition_mean:,.2f}")
 print(f"Tuition median: $ {tuition_median:,}")
 print("******************************")
 
-# Task 5:
+# Task 5: 
 def is_prime(n):
     if n <= 1:
         return False
