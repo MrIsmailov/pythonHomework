@@ -1,44 +1,51 @@
 # Task 1
 
 class Animal:
-    def __init__(self, name, age, sound):
+    def __init__(self, name, age, sound, breed, weight):
         self.name = name
         self.age = age
         self.sound = sound
+        self.breed = breed
+        self.weight = weight
+        self.hungry = False
 
     def make_sound(self):
+        if self.hungry:
+            return f"{self.name} is hungry and says {self.sound.upper()}!"
         return f"{self.name} says {self.sound}"
 
     def eat(self):
+        self.hungry = False
         return f"{self.name} is eating."
 
     def sleep(self):
+        self.hungry = True
         return f"{self.name} is sleeping."
 
 class Cow(Animal):
-    def __init__(self, name, age):
-        super().__init__(name, age, "Moo")
+    def __init__(self, name, age, breed, weight):
+        super().__init__(name, age, "Moo", breed, weight)
 
     def produce_milk(self):
         return f"{self.name} is producing milk."
 
 class Chicken(Animal):
-    def __init__(self, name, age):
-        super().__init__(name, age, "Cluck")
+    def __init__(self, name, age, breed, weight):
+        super().__init__(name, age, "Cluck", breed, weight)
 
     def lay_egg(self):
         return f"{self.name} laid an egg."
 
 class Sheep(Animal):
-    def __init__(self, name, age):
-        super().__init__(name, age, "Baa")
+    def __init__(self, name, age, breed, weight):
+        super().__init__(name, age, "Baa", breed, weight)
 
     def shear(self):
         return f"{self.name} is being sheared."
 
-cow = Cow("Bessie", 5)
-chicken = Chicken("Clucky", 2)
-sheep = Sheep("Woolly", 3)
+cow = Cow("Bessie", 5, "Holstein", 1500)
+chicken = Chicken("Clucky", 2, "Leghorn", 5)
+sheep = Sheep("Woolly", 3, "Merino", 120)
 
 print(cow.make_sound())
 print(cow.eat())
@@ -114,15 +121,28 @@ class Bank:
             print("Account not found.")
 
     def save_to_file(self):
-        with open(self.file_path, 'w') as file:
-            json.dump({acc_num: acc.__dict__ for acc_num, acc in self.accounts.items()}, file)
+        try:
+            with open(self.file_path, 'w') as file:
+                json.dump({acc_num: acc.__dict__ for acc_num, acc in self.accounts.items()}, file)
+        except Exception as e:
+            print(f"An error occurred while saving to file: {e}")
 
     def load_from_file(self):
         if os.path.exists(self.file_path):
-            with open(self.file_path, 'r') as file:
-                accounts_data = json.load(file)
-                for acc_num, acc_data in accounts_data.items():
-                    self.accounts[int(acc_num)] = Account(**acc_data)
+            try:
+                with open(self.file_path, 'r') as file:
+                    accounts_data = json.load(file)
+                    for acc_num, acc_data in accounts_data.items():
+                        self.accounts[int(acc_num)] = Account(**acc_data)
+            except Exception as e:
+                print(f"An error occurred while loading from file: {e}")
+
+def get_valid_input(prompt, input_type):
+    while True:
+        try:
+            return input_type(input(prompt))
+        except ValueError:
+            print(f"Invalid input. Please enter a valid {input_type.__name__}.")
 
 
 bank = Bank()
@@ -137,18 +157,18 @@ while True:
     choice = input("Enter your choice: ")
     if choice == '1':
         name = input("Enter your name: ")
-        initial_deposit = float(input("Enter initial deposit: "))
+        initial_deposit = get_valid_input("Enter initial deposit: ", float)
         bank.create_account(name, initial_deposit)
     elif choice == '2':
-        account_number = int(input("Enter account number: "))
+        account_number = get_valid_input("Enter account number: ", int)
         bank.view_account(account_number)
     elif choice == '3':
-        account_number = int(input("Enter account number: "))
-        amount = float(input("Enter deposit amount: "))
+        account_number = get_valid_input("Enter account number: ", int)
+        amount = get_valid_input("Enter deposit amount: ", float)
         bank.deposit(account_number, amount)
     elif choice == '4':
-        account_number = int(input("Enter account number: "))
-        amount = float(input("Enter withdrawal amount: "))
+        account_number = get_valid_input("Enter account number: ", int)
+        amount = get_valid_input("Enter withdrawal amount: ", float)
         bank.withdraw(account_number, amount)
     elif choice == '5':
         break
